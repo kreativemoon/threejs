@@ -83,6 +83,16 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 
+const cursor = {}
+cursor.x = 0
+cursor.y = 0
+
+window.addEventListener('mousemove', (event) =>
+{
+    cursor.x = event.clientX / sizes.width - 0.5
+    cursor.y = event.clientY / sizes.height - 0.5
+})
+
 const clock = new THREE.Clock();
 let previousTime = 0;
 
@@ -90,6 +100,11 @@ function animate() {
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
+
+    const parallaxX = cursor.x * 0.5
+    const parallaxY = - cursor.y * 0.5
+    sphereLines.position.x += (parallaxX - sphereLines.position.x) * 5 * deltaTime
+    sphereLines.position.y += (parallaxY - sphereLines.position.y) * 5 * deltaTime
 
     sphereLines.rotation.y += deltaTime * 0.1;
     particles.rotation.y += deltaTime * 0.12;
