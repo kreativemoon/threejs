@@ -1,6 +1,6 @@
 import './style.css'
 import * as THREE from 'three'
-
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -17,6 +17,24 @@ const scene = new THREE.Scene()
 /**
  * Objects
  */
+
+// particles
+const particlesGeometry = new THREE.BufferGeometry();
+const particleCnt = 5000
+
+const positions = new Float32Array(particleCnt * 3);
+
+for (let i = 0; i < particleCnt * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 10
+}
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const particleMaterial = new THREE.PointsMaterial({
+    size: 0.005
+})
+
+const particles = new THREE.Points(particlesGeometry, particleMaterial)
+scene.add(particles)
 
 // sphere
 const sphere = new THREE.SphereGeometry(1, 20, 10);
@@ -60,4 +78,25 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.render(scene, camera)
+// renderer.render(scene, camera)
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+const clock = new THREE.Clock();
+let previousTime = 0;
+
+function animate() {
+    const elapsedTime = clock.getElapsedTime()
+    const deltaTime = elapsedTime - previousTime
+    previousTime = elapsedTime
+
+    sphereLines.rotation.y += deltaTime * 0.1;
+    particles.rotation.y += deltaTime * 0.12;
+    renderer.render(scene, camera)
+    controls.update()
+
+    requestAnimationFrame(animate)
+}
+
+animate()
