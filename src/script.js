@@ -1,12 +1,20 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { TextPlugin } from "gsap/TextPlugin";
+gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
 
+// gsap.to(document.querySelector('title'), {duration: 2, text: "This is the new text", ease: "none"});
+let tl = gsap.timeline({defaults: {ease: "Slowmo.easeOut"}});
+tl.to('h2', {y: '0%', duration:0.7, stagger:0.2});
 /**
  * Light
  */
