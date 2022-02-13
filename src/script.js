@@ -28,14 +28,13 @@ tl.to('h2', {y: '0%', duration:0.7, stagger:0.2});
 
 // particles
 const particlesGeometry = new THREE.BufferGeometry();
-const particleCnt = 5000
+const particleCnt = 1000
 
 const positions = new Float32Array(particleCnt * 3);
 
 for (let i = 0; i < particleCnt * 3; i++) {
     positions[i] = (Math.random() - 0.5) * 10
 }
-
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 const particleMaterial = new THREE.PointsMaterial({
     size: 0.005
@@ -51,6 +50,8 @@ const sphereWireframe = new THREE.EdgesGeometry(sphere);
 const sphereLines = new THREE.LineSegments(sphereWireframe, sphereMaterial);
 sphereLines.rotateZ(0.41)
 scene.add(sphereLines)
+
+
 
 /**
  * Sizes
@@ -88,8 +89,8 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 // renderer.render(scene, camera)
 
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
+// const controls = new OrbitControls(camera, canvas);
+// controls.enableDamping = true;
 
 const cursor = {}
 cursor.x = 0
@@ -104,6 +105,11 @@ window.addEventListener('mousemove', (event) =>
 const clock = new THREE.Clock();
 let previousTime = 0;
 
+/**
+ * Scroll
+ */
+
+
 function animate() {
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
@@ -117,7 +123,7 @@ function animate() {
     sphereLines.rotation.y += deltaTime * 0.1;
     particles.rotation.y += deltaTime * 0.12;
     renderer.render(scene, camera)
-    controls.update()
+    // controls.update()
 
     requestAnimationFrame(animate)
 }
